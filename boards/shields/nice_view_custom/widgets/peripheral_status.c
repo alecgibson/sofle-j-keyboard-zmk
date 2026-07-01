@@ -24,6 +24,31 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
 LV_IMG_DECLARE(SERENITY);
 
+#if IS_ENABLED(CONFIG_SERENITY_ANIMATION)
+LV_IMG_DECLARE(serenity_01);
+LV_IMG_DECLARE(serenity_02);
+LV_IMG_DECLARE(serenity_03);
+LV_IMG_DECLARE(serenity_04);
+LV_IMG_DECLARE(serenity_05);
+LV_IMG_DECLARE(serenity_06);
+LV_IMG_DECLARE(serenity_07);
+LV_IMG_DECLARE(serenity_08);
+LV_IMG_DECLARE(serenity_09);
+LV_IMG_DECLARE(serenity_10);
+LV_IMG_DECLARE(serenity_11);
+LV_IMG_DECLARE(serenity_12);
+LV_IMG_DECLARE(serenity_13);
+LV_IMG_DECLARE(serenity_14);
+LV_IMG_DECLARE(serenity_15);
+LV_IMG_DECLARE(serenity_16);
+
+static const lv_img_dsc_t *serenity_frames[] = {
+    &serenity_01, &serenity_02, &serenity_03, &serenity_04, &serenity_05, &serenity_06,
+    &serenity_07, &serenity_08, &serenity_09, &serenity_10, &serenity_11, &serenity_12,
+    &serenity_13, &serenity_14, &serenity_15, &serenity_16,
+};
+#endif
+
 static sys_slist_t widgets = SYS_SLIST_STATIC_INIT(&widgets);
 
 struct peripheral_status_state {
@@ -112,8 +137,16 @@ int zmk_widget_status_init(struct zmk_widget_status *widget, lv_obj_t *parent) {
     lv_obj_align(top, LV_ALIGN_TOP_RIGHT, 0, 0);
     lv_canvas_set_buffer(top, widget->cbuf, CANVAS_SIZE, CANVAS_SIZE, LV_IMG_CF_TRUE_COLOR);
 
+#if IS_ENABLED(CONFIG_SERENITY_ANIMATION)
+    lv_obj_t *art = lv_animimg_create(widget->obj);
+    lv_animimg_set_src(art, (const void **)serenity_frames, ARRAY_SIZE(serenity_frames));
+    lv_animimg_set_duration(art, CONFIG_SERENITY_ANIMATION_MS);
+    lv_animimg_set_repeat_count(art, LV_ANIM_REPEAT_INFINITE);
+    lv_animimg_start(art);
+#else
     lv_obj_t *art = lv_img_create(widget->obj);
     lv_img_set_src(art, &SERENITY);
+#endif
     lv_obj_align(art, LV_ALIGN_TOP_LEFT, 0, 0);
 
     sys_slist_append(&widgets, &widget->node);

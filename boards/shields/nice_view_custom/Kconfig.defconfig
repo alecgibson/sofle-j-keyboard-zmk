@@ -49,6 +49,20 @@ config NICE_VIEW_WIDGET_STATUS
 
 endif # !ZMK_SPLIT || ZMK_SPLIT_ROLE_CENTRAL
 
+if ZMK_SPLIT && !ZMK_SPLIT_ROLE_CENTRAL
+
+config SERENITY_ANIMATION
+    bool "Animate the Serenity peripheral art"
+    default y
+    select LV_USE_ANIMIMG
+
+config SERENITY_ANIMATION_MS
+    int "Serenity animation loop duration (ms)"
+    default 800
+    depends on SERENITY_ANIMATION
+
+endif # ZMK_SPLIT && !ZMK_SPLIT_ROLE_CENTRAL
+
 config ZMK_DISPLAY_STATUS_SCREEN_BUILT_IN
     select LV_FONT_MONTSERRAT_26
 
